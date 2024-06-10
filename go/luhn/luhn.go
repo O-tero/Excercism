@@ -8,7 +8,7 @@ func Valid(number string) bool {
 	}
 
 	rNumber := []rune(number)
-	size := len(rNumber)``
+	size := len(rNumber)
 	checksum := 0
 	n := 0
 
