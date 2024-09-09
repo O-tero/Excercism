@@ -10,7 +10,7 @@ func Abbreviate(s string) string {
 	words := strings.FieldsFunc(s, func(r rune) bool {
 		return r == ' ' || r == '-'
 	})
-// Collect the first letters of each word, ignoring punctuation
+	// Collect the first letters of each word, ignoring punctuation
 	var acronym string
 	for _, word := range words {
 	// Find the first letter in the word that is a letter (ignore punctuation)
