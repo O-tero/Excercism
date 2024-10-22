@@ -5,55 +5,46 @@ import "time"
 type WeekSchedule int
 
 const (
-    First WeekSchedule = iota
-    Second
-    Third
-    Fourth
-    Last
-    Teenth
+	First WeekSchedule = iota
+	Second
+	Third
+	Fourth
+	Last
+	Teenth
 )
 
+// Day function calculates the correct day based on the week schedule, weekday, month, and year
 func Day(wSched WeekSchedule, wDay time.Weekday, month time.Month, year int) int {
-    switch wSched {
-    case First:
-        return firstWeekday(month, year, wDay)
-    case Second:
-        return firstWeekday(month, year, wDay) + 7
-    case Third:
-        return firstWeekday(month, year, wDay) + 14
-    case Fourth:
-        return firstWeekday(month, year, wDay) + 21
-    case Last:
-        return findLastDay(month, year, wDay)
-    case Teenth:
-        return findTeenthDay(month, year, wDay)
-    default:
-        return -1
-    }
-}
+	var start, end int
 
-func firstWeekday(month time.Month, year int, wDay time.Weekday) int {
-    t := time.Date(year, month, 1, 0, 0, 0, 0, time.UTC)
-    for t.Weekday() != wDay {
-        t = t.AddDate(0, 0, 1) 
-    }
-    return t.Day()
-}
+	switch wSched {
+	case First:
+		start = 1
+		end = 7
+	case Second:
+		start = 8
+		end = 14
+	case Third:
+		start = 15
+		end = 21
+	case Fourth:
+		start = 22
+		end = 28
+	case Last:
+		t := time.Date(year, month+1, 0, 0, 0, 0, 0, time.UTC) 
+		start = t.Day() - 6
+		end = t.Day()
+	case Teenth:
+		start = 13
+		end = 19
+	}
 
-func findTeenthDay(month time.Month, year int, wDay time.Weekday) int {
-    for day := 13; day <= 19; day++ {
-        t := time.Date(year, month, day, 0, 0, 0, 0, time.UTC)
-        if t.Weekday() == wDay {
-            return day
-        }
-    }
-    return -1 
-}
-
-func findLastDay(month time.Month, year int, wDay time.Weekday) int {
-    t := time.Date(year, month+1, 0, 0, 0, 0, 0, time.UTC)
-    for t.Weekday() != wDay {
-        t = t.AddDate(0, 0, -1) 
-    }
-    return t.Day()
+	
+	for day := start; day <= end; day++ {
+		t := time.Date(year, month, day, 0, 0, 0, 0, time.UTC)
+		if t.Weekday() == wDay {
+			return day
+		}
+	}
+	return -1
 }
