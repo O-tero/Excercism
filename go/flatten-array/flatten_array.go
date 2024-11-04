@@ -8,13 +8,13 @@ func Flatten(nested interface{}) []interface{} {
 	flattenHelper = func(item interface{}) {
 		switch v := item.(type) {
 		case []interface{}:
-					for _, elem := range v {
+				for _, elem := range v {
 				flattenHelper(elem) 
 			}
 		case nil:
-						return
+				return
 		default:
-					result = append(result, v)
+				result = append(result, v)
 		}
 	}
 
